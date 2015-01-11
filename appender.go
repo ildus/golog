@@ -37,9 +37,9 @@ func (s *Stdout) Append(log Log) {
 }
 
 // Getting Id of stdout appender
-// Id of default stdout appender is "github.com/ivpusic/golog/stdout"
+// Id of default stdout appender is "github.com/ildus/golog/stdout"
 func (s *Stdout) Id() string {
-	return "github.com/ivpusic/golog/stdout"
+	return "github.com/ildus/golog/stdout"
 }
 
 // Function for creating and returning new stdout appender instance.

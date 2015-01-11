@@ -1,6 +1,6 @@
 package main
 
-import "github.com/ivpusic/golog"
+import "github.com/ildus/golog"
 
 type CustomAppender struct {
 }

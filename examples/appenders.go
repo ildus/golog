@@ -1,7 +1,7 @@
 package main
 
-import "github.com/ivpusic/golog"
-import "github.com/ivpusic/golog/appenders"
+import "github.com/ildus/golog"
+import "github.com/ildus/golog/appenders"
 
 func mongo() {
 	logger := golog.Default

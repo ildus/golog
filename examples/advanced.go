@@ -1,7 +1,7 @@
 package main
 
-import "github.com/ivpusic/golog"
-import "github.com/ivpusic/golog/appenders"
+import "github.com/ildus/golog"
+import "github.com/ildus/golog/appenders"
 
 type TestStruct struct {
 	field string
@@ -35,7 +35,7 @@ func advanced() {
 
 	// you can disable appender by passing appender id
 	// id is returned with appender.Id() method
-	application.Disable("github.com/ivpusic/golog/appender/file")
+	application.Disable("github.com/ildus/golog/appender/file")
 
 	// you can disable some logger completely
 	// you have to provide logger name in order to disable it

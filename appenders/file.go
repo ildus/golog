@@ -3,7 +3,7 @@ package appenders
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ivpusic/golog"
+	"github.com/ildus/golog"
 	"os"
 )
 
@@ -11,9 +11,9 @@ type FileAppender struct {
 	path string
 }
 
-// github.com/ivpusic/golog/appender/file
+// github.com/ildus/golog/appender/file
 func (fa *FileAppender) Id() string {
-	return "github.com/ivpusic/golog/appender/file"
+	return "github.com/ildus/golog/appender/file"
 }
 
 func (fa *FileAppender) Append(log golog.Log) {

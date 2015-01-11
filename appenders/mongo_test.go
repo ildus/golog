@@ -1,7 +1,7 @@
 package appenders
 
 import (
-	"github.com/ivpusic/golog"
+	"github.com/ildus/golog"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -10,7 +10,7 @@ import (
 
 func TestMongoId(t *testing.T) {
 	appender := Mongo(golog.Conf{})
-	assert.Equal(t, "github.com/ivpusic/golog/appenders/mongo", appender.Id())
+	assert.Equal(t, "github.com/ildus/golog/appenders/mongo", appender.Id())
 }
 
 func TestMongoAppend(t *testing.T) {

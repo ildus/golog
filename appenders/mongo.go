@@ -1,7 +1,7 @@
 package appenders
 
 import (
-	"github.com/ivpusic/golog"
+	"github.com/ildus/golog"
 	"gopkg.in/mgo.v2"
 )
 
@@ -11,9 +11,9 @@ type MongoAppender struct {
 	collection string
 }
 
-// github.com/ivpusic/golog/appenders/mongo
+// github.com/ildus/golog/appenders/mongo
 func (ma *MongoAppender) Id() string {
-	return "github.com/ivpusic/golog/appenders/mongo"
+	return "github.com/ildus/golog/appenders/mongo"
 }
 
 func (ma *MongoAppender) Append(log golog.Log) {

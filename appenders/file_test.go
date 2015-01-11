@@ -2,7 +2,7 @@ package appenders
 
 import (
 	"encoding/json"
-	"github.com/ivpusic/golog"
+	"github.com/ildus/golog"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
@@ -14,7 +14,7 @@ func init() {
 
 func TestFileId(t *testing.T) {
 	appender := File(golog.Conf{})
-	assert.Equal(t, "github.com/ivpusic/golog/appender/file", appender.Id())
+	assert.Equal(t, "github.com/ildus/golog/appender/file", appender.Id())
 }
 
 func TestFileAppend(t *testing.T) {

@@ -37,7 +37,7 @@ func cleanupTest() {
 }
 
 func (s *testAppender) Id() string {
-	return "github.com/ivpusic/golog/test"
+	return "github.com/ildus/golog/test"
 }
 
 // func TestDefaultPresent(t *testing.T) {
@@ -215,13 +215,13 @@ func TestNormalizeName(t *testing.T) {
 	l.Debug(l.Name)
 	assert.Equal(t, normalizeNameLenInTest("s.o.m.e.r.e.a.l.l.y."), l.Name)
 
-	l = GetLogger("github.com/ivpusic/golog")
+	l = GetLogger("github.com/ildus/golog")
 	l.Debug(l.Name)
-	assert.Equal(t, normalizeNameLenInTest("git/ivp/gol"), l.Name)
+	assert.Equal(t, normalizeNameLenInTest("git/ild/gol"), l.Name)
 
-	l = GetLogger("github.com.ivpusic.golog")
+	l = GetLogger("github.com.ildus.golog")
 	l.Debug(l.Name)
-	assert.Equal(t, normalizeNameLenInTest("git.com.ivp.gol"), l.Name)
+	assert.Equal(t, normalizeNameLenInTest("git.com.ild.gol"), l.Name)
 
 	// name is too short
 	l = GetLogger("main")
