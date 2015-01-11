@@ -22,6 +22,7 @@ func main() {
 
 	// log something
 	logger.Debug("some message")
+    logger.Log(golog.ALERT, "some message", nil)
 }
 ```
 
@@ -43,12 +44,8 @@ go get github.com/ildus/golog
 ```
 
 ### Levels
-Currently supported levels are
-- DEBUG
-- INFO
-- WARN
-- ERROR
-- PANIC (in this case program will panic)
+
+Same as for syslog. Look at https://en.wikipedia.org/wiki/Syslog (Severity levels)
 
 ### Formatting
 Normally you call one of ``Debug``, ``Info``, etc.. methods of logger when you want to log some string. But sometimes you want to format your log, so you want to pass format and parameters related to format. Let's see example:
