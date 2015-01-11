@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"../../id"
 	"github.com/gogo/protobuf/proto"
+	"github.com/ildus/golog/id"
 )
 
 type LogFields map[string]string
@@ -98,21 +98,23 @@ func NewProtobufEmitter(writer io.Writer, envVersion,
 	hostname, loggerName string) *ProtobufEmitter {
 
 	return &ProtobufEmitter{
-		Writer:     writer,
-		LogName:    loggerName,
-		Pid:        int32(os.Getpid()),
-		EnvVersion: envVersion,
-		Hostname:   hostname,
+		Writer:       writer,
+		LogName:      loggerName,
+		Pid:          int32(os.Getpid()),
+		EnvVersion:   envVersion,
+		Hostname:     hostname,
+		UseMockFuncs: false,
 	}
 }
 
 // A ProtobufEmitter emits framed, Protobuf-encoded log messages.
 type ProtobufEmitter struct {
 	io.Writer
-	LogName    string
-	Pid        int32
-	EnvVersion string
-	Hostname   string
+	LogName      string
+	Pid          int32
+	EnvVersion   string
+	Hostname     string
+	UseMockFuncs bool
 }
 
 // Emit encodes and sends a framed log message. Implements LogEmitter.Emit.
@@ -127,14 +129,21 @@ func (pe *ProtobufEmitter) Emit(level int32, messageType, payload string,
 	hm := newHekaMessage()
 	defer hm.free()
 
-	hm.msg.SetID(msgID)
-	hm.msg.SetTimestamp(time.Now().UnixNano())
+	if pe.UseMockFuncs {
+		hm.msg.SetID(idGenerateBytes())
+		hm.msg.SetTimestamp(timeNow().UnixNano())
+		hm.msg.SetPid(varosGetPid())
+	} else {
+		hm.msg.SetID(msgID)
+		hm.msg.SetTimestamp(time.Now().UnixNano())
+		hm.msg.SetPid(pe.Pid)
+	}
+
 	hm.msg.SetType(messageType)
 	hm.msg.SetLogger(pe.LogName)
 	hm.msg.SetSeverity(level)
 	hm.msg.SetPayload(payload)
 	hm.msg.SetEnvVersion(pe.EnvVersion)
-	hm.msg.SetPid(pe.Pid)
 	hm.msg.SetHostname(pe.Hostname)
 	if fields != nil {
 		for name, val := range fields {

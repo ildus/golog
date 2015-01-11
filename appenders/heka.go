@@ -38,7 +38,7 @@ func (ha *HekaAppender) Append(log golog.Log) {
 			ha.EnvVersion, "", log.Logger.Name)
 	}
 
-	ha.emitter.Emit(log.Level, ha.Type, log.Message, nil)
+	ha.emitter.Emit(int32(log.Level), ha.Type, log.Message, nil)
 }
 
 func Heka(cnf golog.Conf) *HekaAppender {
