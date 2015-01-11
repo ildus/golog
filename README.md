@@ -1,21 +1,20 @@
 golog
 =====
-[![Build Status](https://travis-ci.org/ivpusic/golog.svg?branch=master)](https://travis-ci.org/ivpusic/golog)
 
 Simple but powerful go logging library
 
-![alt text](http://s2.postimg.org/gocipacjt/Screenshot_from_2014_12_11_13_11_11.png "")
+![alt text](http://dl.getdropbox.com/u/930627/images/mjfrofeekdbgwsrwtxes.png "")
 
 ### Example
 ```Go
 package main
 
-import "github.com/ivpusic/golog"
+import "github.com/ildus/golog"
 
 func main() {
 	// get default logger
 	logger := golog.Default
-	
+
 	// default level for all loggers is DEBUG
 	// you can easily change it if you want
 	logger.Level = golog.WARN
@@ -31,15 +30,15 @@ func main() {
 	- Stdout appender
 	- File appender
 	- Mongo appender
+    - Heka (http://hekad.readthedocs.org/) appender
 - Simple API for writing custom appenders
 - Enabling/disabling appenders
 - Enabling/disabling loggers
 - Attaching log data
-- Formatting logs
 
 ### Installation
 ```Shell
-go get github.com/ivpusic/golog
+go get github.com/ildus/golog
 ```
 
 ### Levels
@@ -55,7 +54,7 @@ Normally you call one of ``Debug``, ``Info``, etc.. methods of logger when you w
 ```Go
 package main
 
-import "github.com/ivpusic/golog"
+import "github.com/ildus/golog"
 
 func main() {
 	logger := golog.Default
@@ -71,7 +70,7 @@ You can attach data to log. Be aware that your appender have to support this. Ap
 ```Go
 package main
 
-import "github.com/ivpusic/golog"
+import "github.com/ildus/golog"
 
 type SomeType struct {
 	Something 		string
@@ -95,9 +94,9 @@ You can ask ``golog`` for logger instance. Logger instances are singletons.
 ```Go
 package main
 
-import "github.com/ivpusic/golog"
+import "github.com/ildus/golog"
 
-func main() {	
+func main() {
 	// get logger with name github.com/someuser/somelib
 	// if logged doesn't exists, it will be created
 	logger := golog.GetLogger("github.com/someuser/somelib")
@@ -116,7 +115,7 @@ If library which you are using uses ``golog`` you can explicitly enable or disab
 ```Go
 package main
 
-import "github.com/ivpusic/golog"
+import "github.com/ildus/golog"
 
 func main() {
 	// you have to provide logger name in order to disable it
@@ -145,8 +144,8 @@ As you know stdout appender is enabled by default. You can enable additional app
 ```Go
 package main
 
-import "github.com/ivpusic/golog"
-import "github.com/ivpusic/golog/appenders"
+import "github.com/ildus/golog"
+import "github.com/ildus/golog/appenders"
 
 func main() {
 	logger := golog.Default
@@ -165,8 +164,8 @@ func main() {
 ```Go
 package main
 
-import "github.com/ivpusic/golog"
-import "github.com/ivpusic/golog/appenders"
+import "github.com/ildus/golog"
+import "github.com/ildus/golog/appenders"
 
 func main() {
 	logger := golog.Default
@@ -196,8 +195,8 @@ You can disable appender by calling ``Disable`` method of logger.
 ```Go
 package main
 
-import "github.com/ivpusic/golog"
-import "github.com/ivpusic/golog/appenders"
+import "github.com/ildus/golog"
+import "github.com/ildus/golog/appenders"
 
 func main() {
 	logger := golog.Default
@@ -205,16 +204,16 @@ func main() {
 	appender := appenders.File(golog.Conf{
 		"path": "/path/to/log.txt",
 	})
-	
+
 	// let we say that we first enabled appender
 	logger.Enable(appender)
 
 	// and at the some point we want to disable it
 	logger.Disable(appender)
-	
+
 	// you can also disable appender by passing appender id
 	// in this case we are disabling file appender, so we will pass it's id
-	logger.Disable("github.com/ivpusic/golog/appender/file")
+	logger.Disable("github.com/ildus/golog/appender/file")
 
   	// this log won't go to disabled appender
 	logger.Debug("some message")
@@ -227,7 +226,7 @@ Writing your own appender to really simple. You have to implement ``Id`` and ``A
 ```Go
 package main
 
-import "github.com/ivpusic/golog"
+import "github.com/ildus/golog"
 
 type CustomAppender struct {
 }
@@ -271,7 +270,7 @@ Let we say that you hosted your appender on github, and whole repo is reserved o
 In case that you have one repo and in that repo you have multiple appenders available, then you append appender name to ``go get`` path. So if your repository is ``github.com/someuser/appenders``, and you have appender A and appender B available in that repo, then ID of appender A should be ``github.com/someuser/appenders/A`` and ID of appender B should be ``github.com/someuser/appenders/B``.
 
 ### GoDoc
-For additional documentation and detailed info about package structures please visit  [this](https://godoc.org/github.com/ivpusic/golog) link.
+For additional documentation and detailed info about package structures please visit  [this](https://godoc.org/github.com/ildus/golog) link.
 
 # License
 MIT
