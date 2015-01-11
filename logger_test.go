@@ -8,6 +8,7 @@ import (
 type testAppender struct {
 	count      int
 	errorCount int
+	warnCount  int
 	msg        string
 }
 
@@ -15,7 +16,11 @@ func (s *testAppender) Append(log Log) {
 	s.msg = log.Message
 	s.count += 1
 
-	if log.Level.value >= 30 {
+	if log.Level == WARNING {
+		s.warnCount += 1
+	}
+
+	if log.Level < WARNING {
 		s.errorCount += 1
 	}
 }
@@ -35,9 +40,9 @@ func (s *testAppender) Id() string {
 	return "github.com/ivpusic/golog/test"
 }
 
-func TestDefaultPresent(t *testing.T) {
-	assert.NotNil(t, Default, "default logged should be authomatically created")
-}
+// func TestDefaultPresent(t *testing.T) {
+// 	assert.NotNil(t, Default, "default logged should be authomatically created")
+// }
 
 func TestEnable(t *testing.T) {
 	defer cleanupTest()
@@ -47,10 +52,10 @@ func TestEnable(t *testing.T) {
 	Default.Enable(ta)
 	assert.True(t, oldcount == len(Default.appenders)-1)
 
-	Default.Info("some msg")
+	Default.Info("testenable: some msg")
 	assert.Exactly(t, 1, ta.count)
 
-	Default.Info("some msg")
+	Default.Info("testenable: some msg")
 	assert.Exactly(t, 2, ta.count)
 }
 
@@ -95,11 +100,13 @@ func TestDisableById(t *testing.T) {
 }
 
 func TestDisableInvalid(t *testing.T) {
+	defer cleanupTest()
+
 	ta := &testAppender{}
 	Default.Enable(ta)
 
 	Default.Disable(123)
-	assert.Exactly(t, 1, ta.errorCount)
+	assert.Exactly(t, 1, ta.warnCount)
 }
 
 func TestLogCalls(t *testing.T) {
@@ -157,7 +164,7 @@ func TestLogCallsWithLevel(t *testing.T) {
 	ta := &testAppender{}
 	Default.Enable(ta)
 
-	Default.Level = WARN
+	Default.Level = WARNING
 
 	Default.Debug("some msg")
 	Default.Debug("some msg")

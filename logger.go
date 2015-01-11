@@ -7,42 +7,36 @@ import (
 	"time"
 )
 
+type LogLevel int32
+
+// syslog severity levels.
+const (
+	EMERGENCY LogLevel = iota
+	ALERT
+	CRITICAL
+	ERROR
+	WARNING
+	NOTICE
+	INFO
+	DEBUG
+)
+
+var levelNames = map[LogLevel]string{
+	EMERGENCY: "EMERGENCY",
+	ALERT:     "ALERT",
+	CRITICAL:  "CRITICAL",
+	ERROR:     "ERROR",
+	WARNING:   "WARNING",
+	NOTICE:    "NOTICE",
+	INFO:      "INFO",
+	DEBUG:     "DEBUG",
+}
+
+func (l LogLevel) String() string {
+	return levelNames[l]
+}
+
 var (
-	DEBUG = Level{
-		value: 10,
-		color: "blue",
-		icon:  "★",
-		Name:  "DEBUG",
-	}
-
-	INFO = Level{
-		value: 20,
-		color: "green",
-		icon:  "♥",
-		Name:  "INFO",
-	}
-
-	WARN = Level{
-		value: 30,
-		color: "yellow",
-		icon:  "\u26A0",
-		Name:  "WARN",
-	}
-
-	ERROR = Level{
-		value: 40,
-		color: "red",
-		Name:  "ERROR",
-		icon:  "✖",
-	}
-
-	PANIC = Level{
-		value: 50,
-		color: "black",
-		icon:  "☹",
-		Name:  "PANIC",
-	}
-
 	// limit when logger name will be normalized
 	// normalized names are shown in console using stdout appender
 	maxnamelen = 20
@@ -51,23 +45,6 @@ var (
 	// supported name separators
 	separators []byte = []byte{'/', '.', '-'}
 )
-
-// Representing log level
-type Level struct {
-	// level priority value
-	// bigger number has bigger priority
-	value int
-
-	// color which will used by stdout appender
-	// github.com/ivpusic/go-clicolor
-	color string
-
-	// ascii icon of level
-	icon string
-
-	// level name
-	Name string
-}
 
 // Representing one Log instance
 type Log struct {
@@ -78,7 +55,7 @@ type Log struct {
 	Message string `json:"message"`
 
 	// log level
-	Level Level `json:"level"`
+	Level LogLevel `json:"level"`
 
 	// additional data sent to log
 	// this part should be handled by appenders
@@ -108,7 +85,7 @@ type Logger struct {
 	Name string `json:"name"`
 
 	// minimum level of log to be shown
-	Level Level `json:"-"`
+	Level LogLevel `json:"-"`
 
 	// if this flag is set to true, in case any errors in appender
 	// appender should panic. This also depends on appender implementation,
@@ -117,12 +94,12 @@ type Logger struct {
 }
 
 // Making and sending log entry to appenders if log level is appropriate.
-func (l *Logger) makeLog(msg interface{}, lvl Level, data []interface{}) {
+func (l *Logger) Log(msg interface{}, lvl LogLevel, data []interface{}) {
 	if l.disabled {
 		return
 	}
 
-	if lvl.value >= l.Level.value {
+	if lvl <= l.Level {
 		log := Log{
 			Time:    time.Now(),
 			Message: l.toString(msg),
@@ -235,53 +212,53 @@ func (l *Logger) normalizeNameLen() {
 
 // Making log with DEBUG level.
 func (l *Logger) Debug(msg interface{}, data ...interface{}) {
-	l.makeLog(msg, DEBUG, data)
+	l.Log(msg, DEBUG, data)
 }
 
 // Making log with INFO level.
 func (l *Logger) Info(msg interface{}, data ...interface{}) {
-	l.makeLog(msg, INFO, data)
+	l.Log(msg, INFO, data)
 }
 
 // Making log with WARN level.
 func (l *Logger) Warn(msg interface{}, data ...interface{}) {
-	l.makeLog(msg, WARN, data)
+	l.Log(msg, WARNING, data)
 }
 
 // Making log with ERROR level.
 func (l *Logger) Error(msg interface{}, data ...interface{}) {
-	l.makeLog(msg, ERROR, data)
+	l.Log(msg, ERROR, data)
 }
 
 // Making log with PANIC level.
 func (l *Logger) Panic(msg interface{}, data ...interface{}) {
-	l.makeLog(msg, PANIC, data)
+	l.Log(msg, EMERGENCY, data)
 	panic(msg)
 }
 
 // Making formatted log with DEBUG level.
 func (l *Logger) Debugf(msg string, params ...interface{}) {
-	l.makeLog(fmt.Sprintf(msg, params...), DEBUG, nil)
+	l.Log(fmt.Sprintf(msg, params...), DEBUG, nil)
 }
 
 // Making formatted log with INFO level.
 func (l *Logger) Infof(msg string, params ...interface{}) {
-	l.makeLog(fmt.Sprintf(msg, params...), INFO, nil)
+	l.Log(fmt.Sprintf(msg, params...), INFO, nil)
 }
 
 // Making formatted log with WARN level.
 func (l *Logger) Warnf(msg string, params ...interface{}) {
-	l.makeLog(fmt.Sprintf(msg, params...), WARN, nil)
+	l.Log(fmt.Sprintf(msg, params...), WARNING, nil)
 }
 
 // Making formatted log with ERROR level.
 func (l *Logger) Errorf(msg string, params ...interface{}) {
-	l.makeLog(fmt.Sprintf(msg, params...), ERROR, nil)
+	l.Log(fmt.Sprintf(msg, params...), ERROR, nil)
 }
 
 // Making formatted log with PANIC level.
 func (l *Logger) Panicf(msg string, params ...interface{}) {
-	l.makeLog(fmt.Sprintf(msg, params...), PANIC, nil)
+	l.Log(fmt.Sprintf(msg, params...), EMERGENCY, nil)
 	panic(msg)
 }
 
