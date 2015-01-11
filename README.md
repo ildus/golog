@@ -1,7 +1,8 @@
 golog
 =====
 
-Simple but powerful go logging library
+Simple but powerful go logging library. Original version here - https://github.com/ivpusic/golog.
+I dropped colored messages (I don't need them) and added Heka support(for centralized logging).
 
 ![alt text](http://dl.getdropbox.com/u/930627/images/mjfrofeekdbgwsrwtxes.png "")
 
