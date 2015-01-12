@@ -1,5 +1,5 @@
 // https://github.com/mozilla-services/heka/blob/v0.8.0/message/message.proto
-package heka_appender;
+package heka_emitter;
 
 import "gogo.proto";
 

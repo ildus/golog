@@ -110,7 +110,7 @@ func (x *Field_ValueType) UnmarshalJSON(data []byte) error {
 
 type Header struct {
 	MessageLength    *uint32                  `protobuf:"varint,1,req,name=message_length" json:"message_length,omitempty"`
-	HmacHashFunction *Header_HmacHashFunction `protobuf:"varint,3,opt,name=hmac_hash_function,enum=heka_appender.Header_HmacHashFunction,def=0" json:"hmac_hash_function,omitempty"`
+	HmacHashFunction *Header_HmacHashFunction `protobuf:"varint,3,opt,name=hmac_hash_function,enum=heka_emitter.Header_HmacHashFunction,def=0" json:"hmac_hash_function,omitempty"`
 	HmacSigner       *string                  `protobuf:"bytes,4,opt,name=hmac_signer" json:"hmac_signer,omitempty"`
 	HmacKeyVersion   *uint32                  `protobuf:"varint,5,opt,name=hmac_key_version" json:"hmac_key_version,omitempty"`
 	Hmac             []byte                   `protobuf:"bytes,6,opt,name=hmac" json:"hmac,omitempty"`
@@ -160,7 +160,7 @@ func (m *Header) GetHmac() []byte {
 
 type Field struct {
 	Name             *string          `protobuf:"bytes,1,req,name=name" json:"name,omitempty"`
-	ValueType        *Field_ValueType `protobuf:"varint,2,opt,name=value_type,enum=heka_appender.Field_ValueType,def=0" json:"value_type,omitempty"`
+	ValueType        *Field_ValueType `protobuf:"varint,2,opt,name=value_type,enum=heka_emitter.Field_ValueType,def=0" json:"value_type,omitempty"`
 	Representation   *string          `protobuf:"bytes,3,opt,name=representation" json:"representation,omitempty"`
 	ValueString      []string         `protobuf:"bytes,4,rep,name=value_string" json:"value_string,omitempty"`
 	ValueBytes       [][]byte         `protobuf:"bytes,5,rep,name=value_bytes" json:"value_bytes,omitempty"`
@@ -323,8 +323,8 @@ func (m *Message) GetFields() []*Field {
 }
 
 func init() {
-	proto.RegisterEnum("heka_appender.Header_HmacHashFunction", Header_HmacHashFunction_name, Header_HmacHashFunction_value)
-	proto.RegisterEnum("heka_appender.Field_ValueType", Field_ValueType_name, Field_ValueType_value)
+	proto.RegisterEnum("heka_emitter.Header_HmacHashFunction", Header_HmacHashFunction_name, Header_HmacHashFunction_value)
+	proto.RegisterEnum("heka_emitter.Field_ValueType", Field_ValueType_name, Field_ValueType_value)
 }
 func (m *Header) Unmarshal(data []byte) error {
 	l := len(data)

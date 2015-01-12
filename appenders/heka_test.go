@@ -1,7 +1,7 @@
 package appenders
 
 import (
-	"./heka_appender"
+	"../heka_emitter"
 	"bytes"
 	"github.com/ildus/golog"
 	"github.com/stretchr/testify/assert"
@@ -15,7 +15,7 @@ func TestHekaId(t *testing.T) {
 
 func TestProtobufEmitter(t *testing.T) {
 	buf := new(bytes.Buffer)
-	pe := heka_appender.NewProtobufEmitter(buf, "2", "example.com", "test-json-emitter")
+	pe := heka_emitter.NewProtobufEmitter(buf, "2", "example.com", "test-json-emitter")
 	pe.UseMockFuncs = true
 	expected := []byte{
 		0x1e, 0x2,
@@ -34,7 +34,7 @@ func TestProtobufEmitter(t *testing.T) {
 		0x52, 0xa, 0xa, 0x1, 0x65, 0x10, 0x0, 0x1a, 0x0, 0x22, 0x1, 0x66,
 	}
 	err := pe.Emit(int32(golog.INFO), "test", "Howdy",
-		heka_appender.LogFields{"c": "d", "a": "b", "e": "f"})
+		heka_emitter.LogFields{"c": "d", "a": "b", "e": "f"})
 	if err != nil {
 		t.Errorf("Error marshaling framed log message: %s", err)
 	}
