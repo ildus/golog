@@ -3,6 +3,7 @@ package golog
 import (
 	"fmt"
 	"io"
+	"os"
 )
 
 // Interface for implementing custom appenders.
@@ -20,6 +21,8 @@ type Appender interface {
 // Representing stdout appender.
 type Stdout struct {
 	dateformat string
+	buf        []byte
+	out        io.Writer
 }
 
 var (
@@ -29,11 +32,19 @@ var (
 
 // Appending logs to stdout.
 func (s *Stdout) Append(log Log) {
-	fmt.Printf("%s %s [%s]: %s\n",
+	s.buf = s.buf[:0]
+	s.buf = append(s.buf, fmt.Sprintf("%s %s [%s]: %s",
 		log.Level.String()[:4],
 		log.Logger.Name,
 		log.Time.Format(s.dateformat),
-		log.Message)
+		log.Message)...)
+
+	if log.Data != nil {
+		s.buf = append(s.buf, ' ')
+		s.buf = append(s.buf, fmt.Sprint(log.Data...)...)
+	}
+	s.buf = append(s.buf, '\n')
+	s.out.Write(s.buf)
 }
 
 // Getting Id of stdout appender
@@ -47,6 +58,7 @@ func StdoutAppender() *Stdout {
 	if instance == nil {
 		instance = &Stdout{
 			dateformat: "2006-01-02 15:04:05",
+			out:        os.Stdout,
 		}
 	}
 

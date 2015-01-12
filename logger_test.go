@@ -71,7 +71,7 @@ func TestDisableByInstance(t *testing.T) {
 	Default.Disable(ta)
 	assert.True(t, oldcount == len(Default.appenders))
 
-	Default.Info("some msg")
+	Default.Info("some msg", "err1", 423)
 	assert.Exactly(t, 0, ta.count)
 
 	Default.Info("some msg")
