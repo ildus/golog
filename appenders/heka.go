@@ -1,9 +1,9 @@
 package appenders
 
 import (
-	"./heka_appender"
 	"fmt"
 	"github.com/ildus/golog"
+	"github.com/ildus/golog/appenders/heka_appender"
 	"io"
 	"net"
 )
