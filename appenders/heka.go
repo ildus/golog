@@ -3,7 +3,7 @@ package appenders
 import (
 	"fmt"
 	"github.com/ildus/golog"
-	"github.com/ildus/golog/appenders/heka_appender"
+	"github.com/ildus/golog/heka_emitter"
 	"io"
 	"net"
 )
@@ -14,7 +14,7 @@ type HekaAppender struct {
 	EnvVersion string
 	Type       string
 	conn       io.Writer
-	emitter    *heka_appender.ProtobufEmitter
+	emitter    *heka_emitter.ProtobufEmitter
 }
 
 func (fa *HekaAppender) Id() string {
@@ -34,7 +34,7 @@ func (ha *HekaAppender) Append(log golog.Log) {
 			return
 		}
 
-		ha.emitter = heka_appender.NewProtobufEmitter(ha.conn,
+		ha.emitter = heka_emitter.NewProtobufEmitter(ha.conn,
 			ha.EnvVersion, "", log.Logger.Name)
 	}
 
