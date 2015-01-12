@@ -94,7 +94,7 @@ type Logger struct {
 }
 
 // Making and sending log entry to appenders if log level is appropriate.
-func (l *Logger) Log(msg interface{}, lvl LogLevel, data []interface{}) {
+func (l *Logger) Log(lvl LogLevel, msg interface{}, data []interface{}) {
 	if l.disabled {
 		return
 	}
@@ -212,54 +212,54 @@ func (l *Logger) normalizeNameLen() {
 
 // Making log with DEBUG level.
 func (l *Logger) Debug(msg interface{}, data ...interface{}) {
-	l.Log(msg, DEBUG, data)
+	l.Log(DEBUG, msg, data)
 }
 
 // Making log with INFO level.
 func (l *Logger) Info(msg interface{}, data ...interface{}) {
-	l.Log(msg, INFO, data)
+	l.Log(INFO, msg, data)
 }
 
 // Making log with WARN level.
 func (l *Logger) Warn(msg interface{}, data ...interface{}) {
-	l.Log(msg, WARNING, data)
+	l.Log(WARNING, msg, data)
 }
 
 // Making log with ERROR level.
 func (l *Logger) Error(msg interface{}, data ...interface{}) {
-	l.Log(msg, ERROR, data)
+	l.Log(ERROR, msg, data)
 }
 
-// Making log with PANIC level.
-func (l *Logger) Panic(msg interface{}, data ...interface{}) {
-	l.Log(msg, EMERGENCY, data)
-	panic(msg)
+// Making log with CRITICAL level.
+func (l *Logger) Fatal(msg interface{}, data ...interface{}) {
+	l.Log(CRITICAL, msg, data)
+	osExit(1)
 }
 
 // Making formatted log with DEBUG level.
 func (l *Logger) Debugf(msg string, params ...interface{}) {
-	l.Log(fmt.Sprintf(msg, params...), DEBUG, nil)
+	l.Log(DEBUG, fmt.Sprintf(msg, params...), nil)
 }
 
 // Making formatted log with INFO level.
 func (l *Logger) Infof(msg string, params ...interface{}) {
-	l.Log(fmt.Sprintf(msg, params...), INFO, nil)
+	l.Log(INFO, fmt.Sprintf(msg, params...), nil)
 }
 
 // Making formatted log with WARN level.
 func (l *Logger) Warnf(msg string, params ...interface{}) {
-	l.Log(fmt.Sprintf(msg, params...), WARNING, nil)
+	l.Log(WARNING, fmt.Sprintf(msg, params...), nil)
 }
 
 // Making formatted log with ERROR level.
 func (l *Logger) Errorf(msg string, params ...interface{}) {
-	l.Log(fmt.Sprintf(msg, params...), ERROR, nil)
+	l.Log(ERROR, fmt.Sprintf(msg, params...), nil)
 }
 
-// Making formatted log with PANIC level.
-func (l *Logger) Panicf(msg string, params ...interface{}) {
-	l.Log(fmt.Sprintf(msg, params...), EMERGENCY, nil)
-	panic(msg)
+// Making formatted log with CRITICAL level.
+func (l *Logger) Fatalf(msg string, params ...interface{}) {
+	l.Log(CRITICAL, fmt.Sprintf(msg, params...), nil)
+	osExit(1)
 }
 
 // When you want to send logs to another appender,

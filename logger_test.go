@@ -26,6 +26,7 @@ func (s *testAppender) Append(log Log) {
 }
 
 func cleanupTest() {
+	useStdFuncs()
 	loggers = map[string]*Logger{}
 
 	Default = &Logger{
@@ -110,6 +111,7 @@ func TestDisableInvalid(t *testing.T) {
 }
 
 func TestLogCalls(t *testing.T) {
+	mockFuncs()
 	defer cleanupTest()
 
 	defer func() {
@@ -132,10 +134,10 @@ func TestLogCalls(t *testing.T) {
 	Default.Error("some msg")
 	Default.Error("some msg")
 
-	Default.Panic("some msg")
-	Default.Panic("some msg")
+	Default.Fatal("some msg")
+	Default.Fatal("some msg")
 
-	assert.Exactly(t, 8, ta.count)
+	assert.Exactly(t, 10, ta.count)
 
 	ta.msg = ""
 	Default.Debugf("some %s", "message")
@@ -154,7 +156,7 @@ func TestLogCalls(t *testing.T) {
 	assert.Equal(t, "some 3 message", ta.msg)
 
 	ta.msg = ""
-	Default.Errorf("some %s message", 3, "panic")
+	Default.Errorf("some %s message", "panic")
 	assert.Equal(t, "some panic message", ta.msg)
 }
 
