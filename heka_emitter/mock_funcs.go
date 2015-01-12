@@ -1,4 +1,4 @@
-package heka_appender
+package heka_emitter
 
 import "time"
 

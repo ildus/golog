@@ -3,7 +3,7 @@
 // DO NOT EDIT!
 
 /*
-	Package heka_appender is a generated protocol buffer package.
+	Package heka_emitter is a generated protocol buffer package.
 
 	https://github.com/mozilla-services/heka/blob/v0.8.0/message/message.proto
 
@@ -15,7 +15,7 @@
 		Field
 		Message
 */
-package heka_appender
+package heka_emitter
 
 import proto "github.com/gogo/protobuf/proto"
 import math "math"
