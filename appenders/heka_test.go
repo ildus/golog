@@ -1,9 +1,9 @@
 package appenders
 
 import (
-	"../heka_emitter"
 	"bytes"
 	"github.com/ildus/golog"
+	"github.com/ildus/golog/heka_emitter"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
