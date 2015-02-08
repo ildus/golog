@@ -15,8 +15,6 @@ import (
 	"github.com/ildus/golog/id"
 )
 
-type LogFields map[string]string
-
 // TryClose closes w if w implements io.Closer.
 func TryClose(w io.Writer) (err error) {
 	if c, ok := w.(io.Closer); ok {
@@ -87,12 +85,6 @@ func (hm *hekaMessage) marshalFrame() ([]byte, error) {
 	return hm.outBytes, nil
 }
 
-// LogEmitter is the interface implemented by log message emitters.
-type LogEmitter interface {
-	Emit(level int32, messageType, payload string, fields LogFields) error
-	Close() error
-}
-
 // NewProtobufEmitter creates a Protobuf-encoded Heka log message emitter
 func NewProtobufEmitter(writer io.Writer, envVersion,
 	hostname, loggerName string) *ProtobufEmitter {
@@ -117,9 +109,9 @@ type ProtobufEmitter struct {
 	UseMockFuncs bool
 }
 
-// Emit encodes and sends a framed log message. Implements LogEmitter.Emit.
+// Emit encodes and sends a framed log message.
 func (pe *ProtobufEmitter) Emit(level int32, messageType, payload string,
-	fields LogFields) (err error) {
+	fields map[string]string) (err error) {
 
 	msgID, err := id.GenerateBytes()
 	if err != nil {

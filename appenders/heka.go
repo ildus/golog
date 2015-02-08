@@ -38,6 +38,25 @@ func (ha *HekaAppender) Append(log golog.Log) {
 			ha.EnvVersion, "", log.Logger.Name)
 	}
 
+	// if additional data contains maps or errors collect them into one map
+	var logFields map[string]string
+	if log.Data != nil {
+		for _, item := range log.Data {
+			switch item.(type) {
+			case map[string]string:
+				{
+					for key, val := range item.(map[string]string) {
+						logFields[key] = val
+					}
+				}
+			case error:
+				{
+					logFields["error"] = item.(error).Error()
+				}
+			}
+		}
+	}
+
 	ha.emitter.Emit(int32(log.Level), ha.Type, log.Message, nil)
 }
 

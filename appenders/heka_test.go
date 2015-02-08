@@ -34,7 +34,7 @@ func TestProtobufEmitter(t *testing.T) {
 		0x52, 0xa, 0xa, 0x1, 0x65, 0x10, 0x0, 0x1a, 0x0, 0x22, 0x1, 0x66,
 	}
 	err := pe.Emit(int32(golog.INFO), "test", "Howdy",
-		heka_emitter.LogFields{"c": "d", "a": "b", "e": "f"})
+		map[string]string{"c": "d", "a": "b", "e": "f"})
 	if err != nil {
 		t.Errorf("Error marshaling framed log message: %s", err)
 	}
